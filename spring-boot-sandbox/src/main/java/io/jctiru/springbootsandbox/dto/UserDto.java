@@ -1,10 +1,7 @@
 package io.jctiru.springbootsandbox.dto;
 
-import java.io.Serializable;
+public class UserDto {
 
-public class UserDto implements Serializable {
-
-	private static final long serialVersionUID = 2354789903521846037L;
 	private long id;
 	private String userId;
 	private String firstName;
