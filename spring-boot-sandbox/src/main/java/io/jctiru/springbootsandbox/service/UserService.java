@@ -1,6 +1,6 @@
 package io.jctiru.springbootsandbox.service;
 
-import io.jctiru.springbootsandbox.dto.UserDto;
+import io.jctiru.springbootsandbox.shared.dto.UserDto;
 
 public interface UserService {
 

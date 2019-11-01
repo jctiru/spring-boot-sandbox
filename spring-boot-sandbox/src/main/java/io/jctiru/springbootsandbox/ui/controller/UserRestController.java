@@ -1,4 +1,4 @@
-package io.jctiru.springbootsandbox.rest;
+package io.jctiru.springbootsandbox.ui.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.jctiru.springbootsandbox.dto.UserDto;
-import io.jctiru.springbootsandbox.model.request.UserDetailsRequestModel;
-import io.jctiru.springbootsandbox.model.response.UserRest;
 import io.jctiru.springbootsandbox.service.UserService;
+import io.jctiru.springbootsandbox.shared.dto.UserDto;
+import io.jctiru.springbootsandbox.ui.model.request.UserDetailsRequestModel;
+import io.jctiru.springbootsandbox.ui.model.response.UserRest;
 
 @RestController
 @RequestMapping("users")

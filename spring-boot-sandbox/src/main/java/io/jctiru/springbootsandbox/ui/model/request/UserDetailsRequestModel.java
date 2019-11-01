@@ -1,4 +1,4 @@
-package io.jctiru.springbootsandbox.model.request;
+package io.jctiru.springbootsandbox.ui.model.request;
 
 public class UserDetailsRequestModel {
 

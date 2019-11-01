@@ -4,10 +4,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.jctiru.springbootsandbox.dto.UserDto;
-import io.jctiru.springbootsandbox.entity.UserEntity;
-import io.jctiru.springbootsandbox.repository.UserRepository;
+import io.jctiru.springbootsandbox.io.entity.UserEntity;
+import io.jctiru.springbootsandbox.io.repository.UserRepository;
 import io.jctiru.springbootsandbox.service.UserService;
+import io.jctiru.springbootsandbox.shared.dto.UserDto;
 
 @Service
 public class UserServiceImpl implements UserService {

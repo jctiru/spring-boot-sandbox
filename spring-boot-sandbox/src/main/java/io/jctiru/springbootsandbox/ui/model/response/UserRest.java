@@ -1,4 +1,4 @@
-package io.jctiru.springbootsandbox.model.response;
+package io.jctiru.springbootsandbox.ui.model.response;
 
 public class UserRest {
 
