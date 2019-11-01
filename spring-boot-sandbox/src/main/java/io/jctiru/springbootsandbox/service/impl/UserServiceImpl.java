@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import io.jctiru.springbootsandbox.io.entity.UserEntity;
 import io.jctiru.springbootsandbox.io.repository.UserRepository;
 import io.jctiru.springbootsandbox.service.UserService;
+import io.jctiru.springbootsandbox.shared.Utils;
 import io.jctiru.springbootsandbox.shared.dto.UserDto;
 
 @Service
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	Utils utils;
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -24,8 +28,9 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(user, userEntity);
 
+		String publicUserId = utils.generateUserId(50);
 		userEntity.setEncryptedPassword("test");
-		userEntity.setUserId("test");
+		userEntity.setUserId(publicUserId);
 
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 
