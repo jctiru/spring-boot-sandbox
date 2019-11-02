@@ -2,6 +2,7 @@ package io.jctiru.springbootsandbox.service.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import io.jctiru.springbootsandbox.io.entity.UserEntity;
@@ -29,8 +30,10 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(user, userEntity);
 
 		String publicUserId = utils.generateUserId(50);
-		userEntity.setEncryptedPassword("test");
 		userEntity.setUserId(publicUserId);
+
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 
