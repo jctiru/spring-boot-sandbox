@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.jctiru.springbootsandbox.exception.UserServiceException;
 import io.jctiru.springbootsandbox.service.UserService;
 import io.jctiru.springbootsandbox.shared.dto.UserDto;
 import io.jctiru.springbootsandbox.ui.model.request.UserDetailsRequestModel;
+import io.jctiru.springbootsandbox.ui.model.response.ErrorMessages;
 import io.jctiru.springbootsandbox.ui.model.response.UserRest;
 
 @RestController
@@ -35,6 +37,10 @@ public class UserRestController {
 
 	@PostMapping
 	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
+		if (userDetails.getFirstName().isEmpty()) {
+			throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+		}
+
 		UserRest returnValue = new UserRest();
 
 		UserDto userDto = new UserDto();
