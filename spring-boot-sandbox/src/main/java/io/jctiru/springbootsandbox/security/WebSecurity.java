@@ -24,12 +24,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.anyRequest()
 				.authenticated()
 				.and()
-				.addFilter(new AuthenticationFilter(authenticationManager()));
+				.addFilter(getAuthenticationFilter());
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+	}
+
+	public AuthenticationFilter getAuthenticationFilter() throws Exception {
+		AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+		filter.setFilterProcessesUrl("/users/login");
+
+		return filter;
 	}
 
 }
