@@ -52,9 +52,17 @@ public class UserRestController {
 		return returnValue;
 	}
 
-	@PutMapping
-	public String updateUser() {
-		return "Update user called";
+	@PutMapping(path = "/{id}")
+	public UserRest updateUser(@RequestBody UserDetailsRequestModel userDetails, @PathVariable String id) {
+		UserRest returnValue = new UserRest();
+
+		UserDto userDto = new UserDto();
+		BeanUtils.copyProperties(userDetails, userDto);
+
+		UserDto updatedUser = userService.updateUser(id, userDto);
+		BeanUtils.copyProperties(updatedUser, returnValue);
+
+		return returnValue;
 	}
 
 	@DeleteMapping
