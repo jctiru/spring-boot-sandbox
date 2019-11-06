@@ -16,6 +16,9 @@ import io.jctiru.springbootsandbox.service.UserService;
 import io.jctiru.springbootsandbox.shared.dto.UserDto;
 import io.jctiru.springbootsandbox.ui.model.request.UserDetailsRequestModel;
 import io.jctiru.springbootsandbox.ui.model.response.ErrorMessages;
+import io.jctiru.springbootsandbox.ui.model.response.OperationStatusModel;
+import io.jctiru.springbootsandbox.ui.model.response.RequestOperationName;
+import io.jctiru.springbootsandbox.ui.model.response.RequestOperationStatus;
 import io.jctiru.springbootsandbox.ui.model.response.UserRest;
 
 @RestController
@@ -65,9 +68,16 @@ public class UserRestController {
 		return returnValue;
 	}
 
-	@DeleteMapping
-	public String deleteUser() {
-		return "Delete user called";
+	@DeleteMapping(path = "/{id}")
+	public OperationStatusModel deleteUser(@PathVariable String id) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+
+		userService.deleteUser(id);
+
+		returnValue.setOperationResult(RequestOperationStatus.SUCCESSS.name());
+
+		return returnValue;
 	}
 
 }
