@@ -1,5 +1,7 @@
 package io.jctiru.springbootsandbox.shared.dto;
 
+import java.util.List;
+
 public class UserDto {
 
 	private long id;
@@ -11,6 +13,7 @@ public class UserDto {
 	private String encryptedPassword;
 	private String emailVerificationToken;
 	private boolean emailVerificationStatus;
+	private List<AddressDto> addresses;
 
 	public long getId() {
 		return id;
@@ -82,6 +85,14 @@ public class UserDto {
 
 	public void setEmailVerificationStatus(boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
+	}
+
+	public List<AddressDto> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<AddressDto> addresses) {
+		this.addresses = addresses;
 	}
 
 }
