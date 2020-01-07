@@ -38,7 +38,7 @@ public class AddressEntity {
 	private String type;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-	@JoinColumn(name = "users_id")
+	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
 	public long getId() {
