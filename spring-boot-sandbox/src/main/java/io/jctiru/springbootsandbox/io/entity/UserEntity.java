@@ -1,10 +1,15 @@
 package io.jctiru.springbootsandbox.io.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,6 +40,9 @@ public class UserEntity {
 
 	@Column(name = "email_verification_status")
 	private boolean emailVerificationStatus;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<AddressEntity> addresses = new ArrayList<>();
 
 	public long getId() {
 		return id;
@@ -98,6 +106,14 @@ public class UserEntity {
 
 	public void setEmailVerificationStatus(boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
+	}
+
+	public List<AddressEntity> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(List<AddressEntity> addresses) {
+		this.addresses = addresses;
 	}
 
 }
