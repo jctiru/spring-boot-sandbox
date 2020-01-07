@@ -95,8 +95,10 @@ public class UserServiceImpl implements UserService {
 			throw new UsernameNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage() + ": " + userId);
 		}
 
-		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties(userEntity, returnValue);
+		// UserDto returnValue = new UserDto();
+		//BeanUtils.copyProperties(userEntity, returnValue);
+		ModelMapper modelMapper = new ModelMapper();
+		UserDto returnValue = modelMapper.map(userEntity, UserDto.class);
 
 		return returnValue;
 	}
