@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.jctiru.springbootsandbox.exception.UserServiceException;
+import io.jctiru.springbootsandbox.service.AddressService;
 import io.jctiru.springbootsandbox.service.UserService;
+import io.jctiru.springbootsandbox.shared.dto.AddressDto;
 import io.jctiru.springbootsandbox.shared.dto.UserDto;
 import io.jctiru.springbootsandbox.ui.model.request.UserDetailsRequestModel;
+import io.jctiru.springbootsandbox.ui.model.response.AddressesRest;
 import io.jctiru.springbootsandbox.ui.model.response.ErrorMessages;
 import io.jctiru.springbootsandbox.ui.model.response.OperationStatusModel;
 import io.jctiru.springbootsandbox.ui.model.response.RequestOperationName;
@@ -31,6 +35,9 @@ public class UserRestController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	AddressService addressService;
 
 	ModelMapper modelMapper = new ModelMapper();
 
@@ -80,6 +87,20 @@ public class UserRestController {
 		returnValue.setOperationName(RequestOperationName.DELETE.name());
 		userService.deleteUser(id);
 		returnValue.setOperationResult(RequestOperationStatus.SUCCESSS.name());
+
+		return returnValue;
+	}
+
+	@GetMapping(path = "/{id}/addresses")
+	public List<AddressesRest> getUserAddresses(@PathVariable String id) {
+		List<AddressesRest> returnValue = new ArrayList<>();
+		List<AddressDto> addressesDto = addressService.getAddresses(id);
+
+		if (addressesDto != null && !addressesDto.isEmpty()) {
+			java.lang.reflect.Type listType = new TypeToken<List<AddressesRest>>() {
+			}.getType();
+			returnValue = modelMapper.map(addressesDto, listType);
+		}
 
 		return returnValue;
 	}
