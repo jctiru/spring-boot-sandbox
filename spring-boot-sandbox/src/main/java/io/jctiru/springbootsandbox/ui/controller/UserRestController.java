@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,16 +32,16 @@ public class UserRestController {
 	@Autowired
 	UserService userService;
 
+	ModelMapper modelMapper = new ModelMapper();
+
 	@GetMapping
 	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "limit", defaultValue = "25") int limit) {
 		List<UserRest> returnValue = new ArrayList<>();
-
 		List<UserDto> users = userService.getUsers(page, limit);
 
 		for (UserDto userDto : users) {
-			UserRest userModel = new UserRest();
-			BeanUtils.copyProperties(userDto, userModel);
+			UserRest userModel = modelMapper.map(userDto, UserRest.class);
 			returnValue.add(userModel);
 		}
 
@@ -52,9 +51,7 @@ public class UserRestController {
 	@GetMapping(path = "/{id}")
 	public UserRest getUser(@PathVariable String id) {
 		UserDto userDto = userService.getUserByUserId(id);
-		ModelMapper modelMapper = new ModelMapper();
-		UserRest returnValue = modelMapper.map(userDto, UserRest.class);
-		return returnValue;
+		return modelMapper.map(userDto, UserRest.class);
 	}
 
 	@PostMapping
@@ -63,37 +60,25 @@ public class UserRestController {
 			throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		}
 
-		UserRest returnValue = new UserRest();
-
-		ModelMapper modelMapper = new ModelMapper();
 		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
-
 		UserDto createdUser = userService.createUser(userDto);
-		returnValue = modelMapper.map(createdUser, UserRest.class);
 
-		return returnValue;
+		return modelMapper.map(createdUser, UserRest.class);
 	}
 
 	@PutMapping(path = "/{id}")
 	public UserRest updateUser(@RequestBody UserDetailsRequestModel userDetails, @PathVariable String id) {
-		UserRest returnValue = new UserRest();
-
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userDetails, userDto);
-
+		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		UserDto updatedUser = userService.updateUser(id, userDto);
-		BeanUtils.copyProperties(updatedUser, returnValue);
 
-		return returnValue;
+		return modelMapper.map(updatedUser, UserRest.class);
 	}
 
 	@DeleteMapping(path = "/{id}")
 	public OperationStatusModel deleteUser(@PathVariable String id) {
 		OperationStatusModel returnValue = new OperationStatusModel();
 		returnValue.setOperationName(RequestOperationName.DELETE.name());
-
 		userService.deleteUser(id);
-
 		returnValue.setOperationResult(RequestOperationStatus.SUCCESSS.name());
 
 		return returnValue;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +32,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	Utils utils;
 
+	ModelMapper modelMapper = new ModelMapper();
+
 	@Override
 	public UserDto createUser(UserDto user) {
 		if (userRepository.findUserByEmail(user.getEmail()) != null) {
@@ -46,7 +47,6 @@ public class UserServiceImpl implements UserService {
 			user.getAddresses().set(i, address);
 		}
 
-		ModelMapper modelMapper = new ModelMapper();
 		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
 		String publicUserId = utils.generateUserId(50);
@@ -57,9 +57,7 @@ public class UserServiceImpl implements UserService {
 
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 
-		UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
-
-		return returnValue;
+		return modelMapper.map(storedUserDetails, UserDto.class);
 	}
 
 	@Override
@@ -81,10 +79,7 @@ public class UserServiceImpl implements UserService {
 			throw new UsernameNotFoundException(email);
 		}
 
-		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties(userEntity, returnValue);
-
-		return returnValue;
+		return modelMapper.map(userEntity, UserDto.class);
 	}
 
 	@Override
@@ -95,12 +90,7 @@ public class UserServiceImpl implements UserService {
 			throw new UsernameNotFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage() + ": " + userId);
 		}
 
-		// UserDto returnValue = new UserDto();
-		//BeanUtils.copyProperties(userEntity, returnValue);
-		ModelMapper modelMapper = new ModelMapper();
-		UserDto returnValue = modelMapper.map(userEntity, UserDto.class);
-
-		return returnValue;
+		return modelMapper.map(userEntity, UserDto.class);
 	}
 
 	@Override
@@ -116,10 +106,7 @@ public class UserServiceImpl implements UserService {
 
 		UserEntity updatedUserDetails = userRepository.save(userEntity);
 
-		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties(updatedUserDetails, returnValue);
-
-		return returnValue;
+		return modelMapper.map(updatedUserDetails, UserDto.class);
 	}
 
 	@Override
@@ -140,15 +127,12 @@ public class UserServiceImpl implements UserService {
 		}
 
 		List<UserDto> returnValue = new ArrayList<>();
-
 		Pageable pageable = PageRequest.of(page, limit);
-
 		Page<UserEntity> usersPage = userRepository.findAll(pageable);
 		List<UserEntity> users = usersPage.getContent();
 
 		for (UserEntity userEntity : users) {
-			UserDto userDto = new UserDto();
-			BeanUtils.copyProperties(userEntity, userDto);
+			UserDto userDto = modelMapper.map(userEntity, UserDto.class);
 			returnValue.add(userDto);
 		}
 
