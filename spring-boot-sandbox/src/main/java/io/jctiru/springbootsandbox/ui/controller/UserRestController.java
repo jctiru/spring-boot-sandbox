@@ -105,4 +105,12 @@ public class UserRestController {
 		return returnValue;
 	}
 
+	@GetMapping(path = "/{id}/addresses/{addressId}")
+	public AddressesRest getUserAddress(@PathVariable String id, @PathVariable String addressId) {
+		UserDto userDto = userService.getUserByUserId(id);
+		AddressDto addressDto = addressService.getAddress(addressId);
+
+		return modelMapper.map(addressDto, AddressesRest.class);
+	}
+
 }

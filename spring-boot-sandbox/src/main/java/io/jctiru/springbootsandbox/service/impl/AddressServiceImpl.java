@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import io.jctiru.springbootsandbox.exception.AddressServiceException;
 import io.jctiru.springbootsandbox.io.entity.AddressEntity;
 import io.jctiru.springbootsandbox.io.entity.UserEntity;
 import io.jctiru.springbootsandbox.io.repository.AddressRepository;
@@ -43,6 +44,17 @@ public class AddressServiceImpl implements AddressService {
 		}
 
 		return returnValue;
+	}
+
+	@Override
+	public AddressDto getAddress(String addressId) {
+		AddressEntity addressEntity = addressRepository.findByAddressId(addressId);
+
+		if (addressEntity == null) {
+			throw new AddressServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage() + ": " + addressId);
+		}
+
+		return modelMapper.map(addressEntity, AddressDto.class);
 	}
 
 }
