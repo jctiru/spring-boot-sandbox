@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.jctiru.springbootsandbox.exception.UserServiceException;
 import io.jctiru.springbootsandbox.io.entity.UserEntity;
@@ -71,6 +72,7 @@ public class UserServiceImpl implements UserService {
 		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
 	}
 
+	@Transactional
 	@Override
 	public UserDto getUser(String email) {
 		UserEntity userEntity = userRepository.findUserByEmail(email);

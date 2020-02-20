@@ -9,9 +9,9 @@ public class AppProperties {
 
 	@Autowired
 	private Environment env;
-	
+
 	public String getTokenSecret() {
 		return env.getProperty("jwt.tokensecret");
 	}
-	
+
 }
